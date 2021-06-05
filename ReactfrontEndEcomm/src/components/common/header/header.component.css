@@ -1,0 +1,32 @@
+.nav-bar{
+ width: 100%;
+ height: 50px ;
+ background-color: rgb(40, 40, 54);
+ /* margin-left:50px */
+}
+.nav-list{
+list-style-type: none;
+}
+.nav-item a{
+    /* display:inline-block ; */
+    color: white;
+    padding: 13px;
+    float: left;
+}
+.nav-item:hover{
+    cursor: pointer;
+    font-weight: bold;
+    color: blanchedalmond;
+
+}
+.selected{
+    background-color:  #006600;
+    height: 50px;
+    /* width: 40px; */
+}
+.logout{
+    float: right;
+    margin-top: 7px;
+    margin-right: 7px;
+
+}
