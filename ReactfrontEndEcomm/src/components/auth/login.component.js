@@ -5,7 +5,7 @@ import { handleError } from "./../../utilities/error.handler";
 import Button from "../common/submitButton/submitButton.component";
 import "./login.component.css";
 import { notify } from "../../utilities/notify";
-import {redirecttoDashBoard} from '../../utilities/util.user.token.redirect'
+import { redirecttoDashBoard } from "../../utilities/RoleBasedRender/util.user.token.redirect";
 const base_url = process.env.REACT_APP_BASE_URL;
 
 
