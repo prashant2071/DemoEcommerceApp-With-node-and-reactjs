@@ -10,11 +10,12 @@ require('./db_initialize'); //run automatically
 const pug=require('pug');
 const checkTicket = require('./Middleware/checkTicket');
 // app.set('port',8080)
+app.use(cors());
 app.set('view engiene',pug)
 app.set('views',path.join(__dirname,"views"))
 
 app.use('/files', express.static(path.join(__dirname, 'uploads'))) 
-app.use(cors());
+
 app.use(express.urlencoded({
     extended:true
 
@@ -38,16 +39,15 @@ app.use(function (req, res, next) {
 })
 
 
-app.use(function (error, req, res, next) {
-    console.log('from last error handelling middleware',error)
-    res.json({
-        msg: error.msg||error,
-        status: error.status||400,
-        text: 'From last error handelling middleware'
-
-    })
-
-})
+app.use(function (err, req, res, next) {
+  console.log("here at error handling middleware");
+  res.status(400); //yo haliyaena vane front end ma error bhujdoina validate gardinxa
+  res.json({
+    text: "from error handelling middleware ",
+    msg: err.msg || err,
+    status: err.status || 400,
+  });
+});
 
 app.listen(config.port, function (err, done) {
     if (err) {

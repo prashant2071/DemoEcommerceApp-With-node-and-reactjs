@@ -38,24 +38,26 @@ router.post('/login', function (req, res, next) {
     })
         .then(function (user) {
             if (!user) {
-                res.json({
-                    msg: "Invalid Username",
-                    status: "404"
-                })
+                console.log("this is not valid user");
+                return next({
+                  msg: "Invalid Username",
+                  status: 400,
+                });
+
             }
             const isMatched= passwordhash.verify(req.body.password,user.password);
             if(!isMatched){
                 return next({
-                    msg:" password doesn't match",
-                    status:400
-                })
+                  msg: " password doesn't match",
+                  status: 400,
+                });
 
             }
             if (user.status === 'inactive') {
-                res.json({
-                    msg: 'you account is in active please contact system administrator',
-                    status: 403
-                })
+                res.next({
+                  msg: "you account is in active please contact system administrator",
+                  status: 403,
+                });
 
 
             }
