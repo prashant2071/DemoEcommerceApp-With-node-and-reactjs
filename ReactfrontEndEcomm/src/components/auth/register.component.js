@@ -157,21 +157,29 @@ export class Register extends Component {
     e.preventDefault();
     console.log("this props>> ", this.state.data);
     if(this.validateForm('submit'))
+    
     this.setState({
       isSubmitting: true,
     });
-    httpClient.POST('auth/register',this.state.data)
-    .then(response=>{
-      notify.showSuccess(` registered successfully please login`)
-      this.props.history.push('/')
 
-    })
-    .catch(err =>{
-      handleError(err)
-      this.setState({
-        isSubmitting:false
+
+      httpClient.POST('auth/register',this.state.data)
+      .then(response =>{
+        notify.showSuccess('registration successful please login')
+        this.props.history.push('/')
       })
-    })
+      .catch(err=>{
+        handleError(err)
+        this.setState({
+          isSubmitting:false
+        })
+      })
+
+  //   setTimeout(() => {
+  //     this.setState({
+  //       isSubmitting: false,
+  //     });
+  //   }, 3000);
   };
 
   render() {
@@ -194,7 +202,6 @@ export class Register extends Component {
             className="form-control"
             type="text"
             placeholder="Username"
-            value={this.state.data.username}
             name="username"
             id="username"
             onChange={this.handleChange}
@@ -297,16 +304,16 @@ export class Register extends Component {
             onChange={this.handleChange}
           />
           <p className="error">{this.state.error.dob}</p>
-          <label htmlFor="mobileNumber">Mobile Number</label>
+          <label htmlFor="mobileNumber">mobileNumber</label>
           <input
             className="form-control"
-            type="Number"
+            type="number"
             placeholder="98********"
             name="mobileNumber"
             id="mobileNumber"
             onChange={this.handleChange}
           />
-          <p className="error">{this.state.error.dob}</p>
+          <p className="error">{this.state.error.mobileNumber}</p>
           <br></br>
           <Button
             isSubmitting={this.state.isSubmitting}

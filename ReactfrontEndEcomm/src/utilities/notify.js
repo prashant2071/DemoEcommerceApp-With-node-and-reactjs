@@ -8,7 +8,7 @@ const showError = (msg) =>{
 toast.error(msg)
 }
 const showWarning = (msg) =>{
-    cogoToast.error(msg);
+cogoToast.warn(msg);
 
 }
 const showInfo = (msg) =>{

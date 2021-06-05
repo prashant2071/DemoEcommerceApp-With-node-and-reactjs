@@ -1,11 +1,15 @@
 import  { Component } from "react";
 import { Link } from "react-router-dom";
-import { notify } from "../../utilities/notify";
+import axios from "axios";
+import { handleError } from "./../../utilities/error.handler";
 import Button from "../common/submitButton/submitButton.component";
 import "./login.component.css";
-import axios from 'axios'
-import { handleError } from "../../utilities/error.handler";
-const base_url=process.env.REACT_APP_BASE_URL
+import { notify } from "../../utilities/notify";
+import {redirecttoDashBoard} from '../../utilities/util.user.token.redirect'
+const base_url = process.env.REACT_APP_BASE_URL;
+
+
+
 
 
 
@@ -18,6 +22,7 @@ const defaultForm = {
 
 export class Login extends Component {
   constructor(props) {
+    console.log(base_url);
     console.log(" the component is always at first");
     super(props);
     this.state = {
@@ -80,16 +85,65 @@ export class Login extends Component {
     // return validForm
   };
 
+  submitForm = (e) => {
+    e.preventDefault();
+    // notify.showSuccess('logging in progress')
+    const isValidForm = this.validateForm("submit");
+    if (!isValidForm) return;
+    this.setState({
+      isSubmitting: true,
+    });
+    // setInterval aafai Interval ma run vai rako hunxa
+
+    axios
+      .post(`${base_url}/auth/login`, this.state.data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: {},
+        timeout: 10000,
+        responseType: "json",
+        timeoutErrorMessage: "server unreachable",
+      })
+      .then((response) => {
+        console.log("respose >>>", response);
+        localStorage.setItem('token',response.data.token);
+        localStorage.setItem('user',JSON.stringify(response.data.user))
+        localStorage.setItem('remember_me',this.state.remember_me)
+        notify.showSuccess(`welcome ${response.data.user.firstName}`);
+        // this.props.history.push("/dashboard");
+        redirecttoDashBoard(this.props.history)
+      })
+      .catch(err => {
+        handleError(err);
+        this.setState({
+          isSubmitting: false,
+        });
+      });
+    // this.abcd=setInterval(() => {
+    //   notify.showSuccess('login successfully')
+    //    //If Incase of setInterval
+    //   //once we have response from we put it to local storage
+    //   //json.stringfy it convert the json object into string
+    //   localStorage.setItem("remember_me", JSON.stringify(this.state.remember_me));
+    //   this.props.history.push({
+    //     pathname: "/dashboard",
+    //     state: {
+    //       name: "prashant",
+    //     },
+    //   });
+    // }, 1500);
+  };
+
   handleChange = (e) => {
-    var { type, name, value, checked } = e.target;
-        console.log("the name is", name);
-        console.log("the value is ", value);
+    var { name, value, checked } = e.target;
+    console.log("the name is", name);
+    console.log("the value is ", value);
     // if(type==='checkbox')
-    if (name === "remember_me"){
+    if (name === "remember_me") {
       return this.setState({
         [name]: checked, //checked le booolean return garxa
       });
-
     }
     this.setState(
       (prevState) => ({
@@ -105,47 +159,14 @@ export class Login extends Component {
     );
   };
 
-  submitForm = (e) => {
-    e.preventDefault();
-    const isValidForm = this.validateForm("submit");
-    if (!isValidForm) return;
-    
-    axios.post(`${base_url}/auth/login`,this.state.data,{
-        headers:{
-          "Content-Type" : "application/json"
-        },
-        responseType:"json",
-        timeout:10000,
-        timeoutErrorMessage:'server loading failed',
-
-    })
-    .then(response=>{
-      console.log('response data is >>',response)
-      localStorage.setItem('token',response.data.token)
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      localStorage.setItem("remember_me", this.state.remember_me);
-
-      this.props.history.push('/dashboard');
-      notify.showSuccess(`welcome ${response.data.user.firstName}`)
-
-    })
-    .catch(err =>{
-      handleError(err);
-      this.setState({
-        isSubmitting:false
-      })
-
-    })
-  };
-
   componentDidMount() {
     console.log("this will render at third");
     console.log("the props is >>", this.props);
-         var isRememberme = JSON.parse(localStorage.getItem("remember_me"));
-         console.log("the remember me value>>>", typeof isRememberme);
-         if (isRememberme) {
-           this.props.history.push("/dashboard");
-         }
+    var isRememberme = JSON.parse(localStorage.getItem("remember_me"));
+    console.log("the remember me value>>>", typeof isRememberme);
+    if (isRememberme) {
+      this.props.history.push("/dashboard");
+    }
     //   let i=0
     //  this.abcd= setInterval(() => {
     //     i++;
@@ -157,12 +178,11 @@ export class Login extends Component {
     //   console.log('this count is :',this.state.count)
   }
   componentDidUpdate(prevProps, prevState) {
-
     // console.log('prev state count ',prevState.count)
     // console.log('once updated! ',this.state.count)
   }
   componentWillUnmount() {
-    clearInterval(this.abcd)
+    clearInterval(this.abcd);
     // console.log('Component Destroyed !!')
   }
 
@@ -202,8 +222,11 @@ export class Login extends Component {
           <label> &nbsp;Remember me</label>
           <br></br>
           <br></br>
-          <Button isSubmitting={this.state.isSubmitting} 
-          enableLabel="login" />
+          <Button
+            isSubmitting={this.state.isSubmitting}
+            enableLabel="login"
+            disabledLabel="logging in.."
+          />
         </form>
         <p>don't have an account?</p>
         <p className="floatleft">

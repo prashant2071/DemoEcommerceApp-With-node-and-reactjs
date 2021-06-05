@@ -46,15 +46,11 @@ const logoutfun = (history) =>{
      ) : (
        <ul className="nav-list">
          <li className="nav-item">
-           <NavLink activeClassName="selected" to="home">
+           <NavLink activeClassName="selected" to="/home">
              Home
            </NavLink>
          </li>
-         <li className="nav-item">
-           <NavLink activeClassName="selected" to="/services">
-             Services
-           </NavLink>
-         </li>
+
          <li className="nav-item">
            <NavLink activeClassName="selected" to="/contact">
              Contact
@@ -66,7 +62,7 @@ const logoutfun = (history) =>{
            </NavLink>
          </li>
          <li className="nav-item">
-           <NavLink activeClassName="selected" to="/setting/kishor">
+           <NavLink activeClassName="selected" to="/setting/prashant">
              Setting
            </NavLink>
          </li>

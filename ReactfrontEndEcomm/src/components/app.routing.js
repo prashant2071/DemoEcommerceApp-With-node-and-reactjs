@@ -20,6 +20,7 @@ const Dashboard = (props) => {
     <p>please use side navigation or contact system administrator</p>
   </div>)
 }; 
+
 const About = (props) => {
   return (<div>About Page </div>);
 }; 
@@ -65,9 +66,9 @@ const  AppRouting= ()=> {
             <Route path="/home" component={Home}></Route>
             <Route path="/dashboard" component={Dashboard}></Route>
             <Route path="/about" component={About}></Route>
+            <Route path="/setting/:name" component={Setting}></Route>
             <Route path="/services" component={Services}></Route>
             <Route path="/contact" component={Contact}></Route>
-            <Route path="/setting/:name" component={Setting}></Route>
             <Route component={NotFound}></Route>
           </Switch>
         </BrowserRouter>
