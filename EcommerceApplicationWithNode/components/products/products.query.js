@@ -1,5 +1,4 @@
 const ProductModel = require('./products.model')
-// const Map_product_req = require('./../../helpers/map_product_req');
 const map_product_req = require('./../../helpers/map_product_req');
 const removeFile = require('./../../helpers/removefile')
 const NotificationModel = require('../../Models/notification.model')
@@ -9,8 +8,7 @@ const NotificationModel = require('../../Models/notification.model')
 
 function find(condition) {
     return ProductModel
-        .find(condition) //yaha find by vendor hunxa
-        //find method promise which is implemented in controller beacause it is called from controller
+        .find(condition) //this find method return promise
         .sort({
             _id: -1
         })
