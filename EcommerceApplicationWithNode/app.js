@@ -14,7 +14,7 @@ app.use(cors());
 app.set('view engiene',pug)
 app.set('views',path.join(__dirname,"views"))
 
-app.use('/files', express.static(path.join(__dirname, 'uploads'))) 
+app.use('/files', express.static(path.join(__dirname, 'Uploads'))) 
 
 app.use(express.urlencoded({
     extended:true

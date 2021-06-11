@@ -6,7 +6,7 @@ const reviewSchema=new Schema({
         type:Number,
         min:1,
         max:5,
-        require:true
+        required:true
     },
     user:{
         type:Schema.Types.ObjectId,
@@ -14,7 +14,7 @@ const reviewSchema=new Schema({
     },
     message:{
         type:String,
-        require:true
+        required:true
     }
 },{
     timestamps:true
@@ -22,16 +22,20 @@ const reviewSchema=new Schema({
 const ProductSchema=new Schema({
     name:{
         type:String,
-        require:true
+        required:true
     },
+    description:String,
     category:{
         type:String,
-        require:true
+        required:true
     },
     size:String,
     brand:String,
     image:[String],  //array of string hunxa
-    price:Number,
+    price:{
+        type:Number,
+        required:true
+    },
     quantity:Number,
 
     status:{

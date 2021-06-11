@@ -4,8 +4,14 @@ module.exports = function (product, productDetails) {
         product.name = productDetails.name
     if (productDetails.category)
         product.category = productDetails.category
+     if (productDetails.description)
+         product.description = productDetails.description;
     if (productDetails.image)
         product.image = productDetails.image
+    if (productDetails.tags) 
+        product.tags = productDetails.tags;
+    if (productDetails.offer) 
+        product.offer = productDetails.offer;
     if (productDetails.status)
         product.status = productDetails.status
     if (productDetails.modelNo)
@@ -47,14 +53,14 @@ module.exports = function (product, productDetails) {
     product.tags=typeof(productDetails.tags)==="string"
     ? productDetails.tags.split(',')
     :productDetails.tags
-    if(!product.discount)
-    product.discount={}
-    if(product.discount.discountedItem)
-    product.discount.discountedItem=productDetails.discount.discountedItem
-    if(product.discountType)
-    product.discount.discountType=productDetails.discount.discountType
-    if(product.discountValue)
-    product.discount.discountValue=productDetails.discount.discountValue
+    if (!product.discount) 
+    product.discount = {};
+    if (productDetails.discountedItem)
+      product.discount.discountedItem = productDetails.discountedItem;
+    if (productDetails.discountType)
+      product.discount.discountType = productDetails.discountType;
+    if (productDetails.discountedvalue)
+      product.discount.discountedvalue = productDetails.discountedvalue;
 
 
 

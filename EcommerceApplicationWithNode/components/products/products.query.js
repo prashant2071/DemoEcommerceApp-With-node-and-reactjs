@@ -1,5 +1,5 @@
 const ProductModel = require('./products.model')
-const Map_product_req = require('./../../helpers/map_product_req');
+// const Map_product_req = require('./../../helpers/map_product_req');
 const map_product_req = require('./../../helpers/map_product_req');
 const removeFile = require('./../../helpers/removefile')
 const NotificationModel = require('../../Models/notification.model')
@@ -42,42 +42,71 @@ function getById(id) {
     })
 
 }
-function update(id, newproduct) {
+function update(id, data) {
     return new Promise((resolve, reject) => {
         ProductModel
             .findById(id, function (err, product) {
+              if (err) {
+                return reject(err);
+              }
+              if (!product) {
+                return reject({
+                  msg: "product not found",
+                  status: 404,
+                });
+              }
+              console.log('#####################################'+'\n'+"##############################",data.filestoRemove)
+              let oldUpdatedImage=[];
+              if(data.filestoRemove && data.filestoRemove.length){
+                  
+                   oldUpdatedImage=remove_Existiong_oldImage(product.image,data.filestoRemove)
+                  console.log(
+                    "#...>>>>>>>>>>>>>>>>>>>..................>>>>>>>>>>..................>>>>>>>>>>>>", oldUpdatedImage);
+              }
+              data.image = oldUpdatedImage;
+                            console.log(
+                              "data Image is$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$>>>>>",
+                              data.image
+                            );
+
+              //if existing image are remove is now updated
+
+            //   removeFile(oldImage) //for using through  postman
+
+
+              map_product_req(product, data);
+              if (data.newImages && data.newImages.length) {
+                product.image.push(...data.newImages);
+              }
+              return product.save((err, updated) => {
                 if (err) {
-                    return reject(err)
+                  return reject(err);
+                } else {
+                  // removeFile(oldImage)//to remove file using postman
+                  const newNotification = new NotificationModel({});
+                  (newNotification.user_id = data.user_id),
+                    (newNotification.category = "General_update"),
+                    (newNotification.message = "your product is updated"),
+                    newNotification.save();
+                  resolve(updated);
                 }
-                if (!product) {
-                    return reject({
-                        msg: 'product not found',
-                        status: 404
-
-                    })
-                }
-                var oldImage = product.image;
-                map_product_req(product, newproduct)
-                return product.save((err, updated) => {
-                    if (err) {
-                        return reject(err)
-                    }
-                    else {
-                        removeFile(oldImage)
-                        const newNotification = new NotificationModel({});
-                        newNotification.user_id = newproduct.user_id,
-                            newNotification.category = 'General_update',
-                            newNotification.message = 'your product is updated',
-                            newNotification.save();
-                        resolve(updated)
-                    }
-                })
-
-
+              });
             })
             .populate('user_id', { username: 1, firstName: 1 })
 
     })
+}
+    function remove_Existiong_oldImage (oldImages =[],filestoRemove=[]){
+        oldImages.forEach(function(image,index){
+            if (filestoRemove.includes(image)) {
+            oldImages.splice(index, 1);
+        }
+    })
+    return oldImages;
+
+        
+
+    
 }
 function remove(id) {
     return new Promise(function (resolve, reject) {

@@ -1,3 +1,5 @@
+// const { delete } = require('../../Route/api.route');
+// const { delete } = require('../../Route/api.route');
 const ProductQuery = require('./products.query');
 
 
@@ -55,11 +57,25 @@ function getById(req, res, next) {
 function update(req, res, next) {
     const data = req.body
     data.user_id = req.user._id
+    console.log("req body data >>>", data);
     if (req.files && req.files.length) {
-        data.image = req.files.map(function (file) {
+        data.newImages= req.files.map(function (file) {
             return file.filename;
         })
     }
+    //note images are in string instead  so remove existing image from request
+ delete data.image;
+
+
+ const filestoRemove = data.filestoRemove
+ .split(',')
+ .map(img=>{
+     return img.split('image/')[1]
+ })
+ data.filestoRemove=filestoRemove
+ console.log('files to remove',filestoRemove)
+
+
     ProductQuery.update(req.params.id, data)
         .then(function (updated) {
             res.json(updated)
