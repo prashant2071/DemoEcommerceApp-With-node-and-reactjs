@@ -66,14 +66,14 @@ function update(req, res, next) {
     //note images are in string instead  so remove existing image from request
  delete data.image;
 
-
+console.log("new Images are", data.newImages)
  const filestoRemove = data.filestoRemove
  .split(',')
  .map(img=>{
      return img.split('image/')[1]
  })
  data.filestoRemove=filestoRemove
- console.log('files to remove',filestoRemove)
+ console.log('Files to remove',filestoRemove)
 
 
     ProductQuery.update(req.params.id, data)

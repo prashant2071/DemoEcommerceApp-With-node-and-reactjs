@@ -53,29 +53,31 @@ function update(id, data) {
                   status: 404,
                 });
               }
-              console.log('#####################################'+'\n'+"##############################",data.filestoRemove)
+              console.log("Files to remove",data.filestoRemove)
+              console.log("Product Image",product.image)
               let oldUpdatedImage=[];
               if(data.filestoRemove && data.filestoRemove.length){
                   
-                   oldUpdatedImage=remove_Existiong_oldImage(product.image,data.filestoRemove)
+                   oldUpdatedImage = remove_Existing_oldImage(
+                     product.image,
+                     data.filestoRemove
+                   );
                   console.log(
-                    "#...>>>>>>>>>>>>>>>>>>>..................>>>>>>>>>>..................>>>>>>>>>>>>", oldUpdatedImage);
+                    "#...>>>>>>>>>>>>>>>>>>>OldupdateImage", oldUpdatedImage);
               }
               data.image = oldUpdatedImage;
                             console.log(
-                              "data Image is$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$>>>>>",
+                              "data Image is>>>",
                               data.image
                             );
 
-              //if existing image are remove is now updated
-
-            //   removeFile(oldImage) //for using through  postman
-
+              
 
               map_product_req(product, data);
               if (data.newImages && data.newImages.length) {
                 product.image.push(...data.newImages);
               }
+              console.log("PRODUCT IMAGES TO UPLOAD ARE",product.image)
               return product.save((err, updated) => {
                 if (err) {
                   return reject(err);
@@ -94,17 +96,15 @@ function update(id, data) {
 
     })
 }
-    function remove_Existiong_oldImage (oldImages =[],filestoRemove=[]){
+    function remove_Existing_oldImage (oldImages =[],filestoRemove=[]){
         oldImages.forEach(function(image,index){
             if (filestoRemove.includes(image)) {
             oldImages.splice(index, 1);
+
         }
     })
-    return oldImages;
-
-        
-
-    
+        return oldImages;
+ 
 }
 function remove(id) {
     return new Promise(function (resolve, reject) {

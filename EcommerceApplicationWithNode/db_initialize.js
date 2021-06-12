@@ -1,7 +1,14 @@
 const mongoose=require('mongoose');
+const { CONXN_URL } = require('./configs/db.config');
 const db_config=require('./configs/db.config');
 
-mongoose.connect(db_config.CONXN_URL+"/"+db_config.DB_NAME,{
+let conxn_url=  db_config.CONXN_URL + "/" + db_config.DB_NAME;
+// mongo "mongodb+srv://ecommerce.hvvfx.mongodb.net/myFirstDatabase" --username PRASHANT
+if(process.env.REMOTE){
+    conxn_url =  "mongodb+srv://PRASHANT:PRASHANT@123GO@ecommerce.hvvfx.mongodb.net/Ecommerce?retryWrites=true&w=majority";
+}
+console.log('connection url value ',conxn_url)
+mongoose.connect(conxn_url,{
 useUnifiedTopology:true,useNewUrlParser:true
 },function(err,done){
     if(err){
