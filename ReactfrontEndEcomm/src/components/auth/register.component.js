@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import { httpClient } from "../../utilities/httpClient/httpClient";
 import { notify } from "../../utilities/notify";
 import { handleError } from "../../utilities/error.handler";
+import "./register.component.css";
 
 const defaultForm = {
   username: "",
@@ -193,7 +194,7 @@ export class Register extends Component {
     //   </button>
     // );
     return (
-      <div>
+      <div className="registerauthbox">
         <h2>Register</h2>
         <p>please register to continue</p>
         <form className="form-group" onSubmit={this.handleSubmit}>
@@ -323,7 +324,6 @@ export class Register extends Component {
         </form>
         <p>Aready Registered?</p>
         <p>
-          {" "}
           Back to <Link to="/"> login</Link>
         </p>
       </div>

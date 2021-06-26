@@ -1,0 +1,13 @@
+.chat-box{
+    height: 300px;
+    /* width: 200px; */
+    border: 1px solid darkblue;
+    border-radius: 5px;
+    overflow: auto;
+}
+.input-box{
+    width: 285px;
+    display: inline-block;
+    margin-top: 3px;
+
+}

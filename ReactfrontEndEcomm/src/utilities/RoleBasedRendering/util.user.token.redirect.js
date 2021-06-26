@@ -9,6 +9,9 @@ export const redirecttoDashBoard = (history) =>{
     if(CurrentUser.role===2){
         history.push('/home')
     }
+        if (CurrentUser.role === 3) {
+          history.push("/dashboard");
+        }
 
 // check user role redirect to admin dashboard
 }

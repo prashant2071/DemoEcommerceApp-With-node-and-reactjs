@@ -1,40 +1,87 @@
 import axios from "axios";
 const base_url = process.env.REACT_APP_BASE_URL;
-const http= axios.create({
-    baseURL:base_url,
-    responseType:"json",
-    timeout:20000,
-    timeoutErrorMessage:"server took too much time to respond",
-    headers:{
-        'Content-Type':'application/json'
+const http = axios.create({
+  baseURL: base_url,
+  responseType: "json",
+  timeout: 20000,
+  timeoutErrorMessage: "server took too much time to respond",
+});
+
+const getHeaders = (isSecured = false) => {
+  const option = {
+    "Content-Type": "application/json",
+  };
+  if (isSecured) {
+    option["Authorization"] = localStorage.getItem("token");
+  }
+  return option;
+};
+
+const GET = (url, isSecured = false, params = {}) => {
+  return http.get(url, {
+    headers: getHeaders(isSecured),
+    params,
+  });
+};
+const POST = (url, data, isSecured = false, params = {}) => {
+  return http.post(url, data, {
+    headers: getHeaders(isSecured),
+
+    params,
+  });
+};
+const PUT = (url, data, isSecured = false, params = {}) => {
+  return http.put(url, data, {
+    headers: getHeaders(isSecured),
+
+    params,
+  });
+};
+const DELETE = (url, isSecured = false, params = {}) => {
+  return http.delete(url, {
+    headers: getHeaders(isSecured),
+
+    params,
+  });
+};
+
+const UPLOAD = (method, url, data = {}, files = []) => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+
+    // append textual data in form data
+    for (let key in data) {
+      formData.append(key, data[key]);
     }
+    // append files in form Data
+    files.forEach((file, index) => {
+      formData.append("image", file, file.name);
+    });
 
-})
-const GET =((url,params={})=>{
-return http.get(url,{
-    params
-})
-})
-const POST =((url,data,params={})=>{
-return http.post(url,data,{
-    params
-})
-})
-const PUT =((url,data,params={})=>{
-return http.put(url,data,{
-    params
-})
-})
-const DELETE =((url,params={})=>{
-return http.delete(url),{
-    params
-}
-})
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          resolve(xhr.response);
+        } else {
+          reject(xhr.response);
+        }
+      }
+    };
 
-export const httpClient={
- GET,
- PUT,
- POST,
- DELETE
-}
+    xhr.open(
+      method,
+      `${base_url}${url}?token=${localStorage.getItem("token")}`,
+      true
+    );
+    xhr.send(formData);
+  });
+};
 
+export const httpClient = {
+  GET,
+  PUT,
+  POST,
+  DELETE,
+  UPLOAD,
+};

@@ -9,14 +9,14 @@ const logoutfun = (history) =>{
 }
 
    const HeaderComponent=(props)=>{
-
+const currentUser= JSON.parse(localStorage.getItem('user'))
     console.log('props in header >>',props)
      const content = props.isLoggedIn ? (
        <ul className="nav-list">
          <li className="nav-item">
-           <NavLink activeClassName="selected" to="home">
+           <NavLink activeClassName="selected" to="/dashboard">
              Home
-           </NavLink>{" "}
+           </NavLink>
          </li>
 
          <li className="nav-item">
@@ -38,9 +38,14 @@ const logoutfun = (history) =>{
          </li>
 
          <li className="nav-item">
-           <NavLink activeClassName="selected" to="/logout">
+           <button
+             className="btn btn-info logout"
+             onClick={() => logoutfun(props.history)}
+           >
              Logout
-           </NavLink>
+           </button>
+           <span style={{color:"white",float:"right",marginRight:'10px' ,marginTop:"15px"}}>{currentUser.username}</span>
+
          </li>
        </ul>
      ) : (
@@ -51,19 +56,15 @@ const logoutfun = (history) =>{
            </NavLink>
          </li>
 
-         <li className="nav-item">
+         {/* <li className="nav-item">
            <NavLink activeClassName="selected" to="/contact">
              Contact
            </NavLink>
-         </li>
+         </li> */}
+
          <li className="nav-item">
-           <NavLink activeClassName="selected" to="/about">
-             About
-           </NavLink>
-         </li>
-         <li className="nav-item">
-           <NavLink activeClassName="selected" to="/setting/prashant">
-             Setting
+           <NavLink activeClassName="selected" to="/register">
+             Register
            </NavLink>
          </li>
 
@@ -71,14 +72,6 @@ const logoutfun = (history) =>{
            <NavLink activeClassName="selected" exact to="/">
              Login
            </NavLink>
-         </li>
-         <li className="nav-item">
-           <button
-             className="btn btn-info logout"
-             onClick={() => logoutfun(props.history)}
-           >
-             Logout
-           </button>
          </li>
        </ul>
      );

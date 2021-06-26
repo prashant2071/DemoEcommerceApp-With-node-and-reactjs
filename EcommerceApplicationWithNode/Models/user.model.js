@@ -54,7 +54,10 @@ const mongoose=require('mongoose');
        type: String,
        default: "Nepal",
      },
+     passwordResetToken:String,
+     passwordResetExpiry:String,
    },
+
    {
      timestamps: true,
    }

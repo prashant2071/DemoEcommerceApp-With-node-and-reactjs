@@ -9,13 +9,14 @@
 }
 
 .authbox{
-    margin-left:auto;
-    margin-right: auto;
+    /* margin-left:auto;
+    margin-right: auto; */
     background-color: #f2f2f2;
-    width: 100%;
+    /* width: 1000px; */
     height: 480px;
     padding: 20px;
-    margin-top: 20px;
+    margin-top: 5px;
+    /* margin-left: 190px; */
 
 }
 .submit {

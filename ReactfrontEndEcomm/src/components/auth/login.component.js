@@ -1,11 +1,11 @@
 import  { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { handleError } from "./../../utilities/error.handler";
+import { handleError} from "./../../utilities/error.handler";
 import Button from "../common/submitButton/submitButton.component";
 import "./login.component.css";
 import { notify } from "../../utilities/notify";
-import { redirecttoDashBoard } from "../../utilities/RoleBasedRender/util.user.token.redirect";
+import {redirecttoDashBoard} from '../../utilities/RoleBasedRendering/util.user.token.redirect'
 const base_url = process.env.REACT_APP_BASE_URL;
 
 
@@ -23,7 +23,6 @@ const defaultForm = {
 export class Login extends Component {
   constructor(props) {
     console.log(base_url);
-    console.log(" the component is always at first");
     super(props);
     this.state = {
       data: {
@@ -87,13 +86,11 @@ export class Login extends Component {
 
   submitForm = (e) => {
     e.preventDefault();
-    // notify.showSuccess('logging in progress')
     const isValidForm = this.validateForm("submit");
     if (!isValidForm) return;
     this.setState({
       isSubmitting: true,
     });
-    // setInterval aafai Interval ma run vai rako hunxa
 
     axios
       .post(`${base_url}/auth/login`, this.state.data, {
@@ -111,8 +108,7 @@ export class Login extends Component {
         localStorage.setItem('user',JSON.stringify(response.data.user))
         localStorage.setItem('remember_me',this.state.remember_me)
         notify.showSuccess(`welcome ${response.data.user.firstName}`);
-        // this.props.history.push("/dashboard");
-        redirecttoDashBoard(this.props.history)
+        redirecttoDashBoard(this.props.history) //user authorization
       })
       .catch(err => {
         handleError(err);
@@ -120,26 +116,13 @@ export class Login extends Component {
           isSubmitting: false,
         });
       });
-    // this.abcd=setInterval(() => {
-    //   notify.showSuccess('login successfully')
-    //    //If Incase of setInterval
-    //   //once we have response from we put it to local storage
-    //   //json.stringfy it convert the json object into string
-    //   localStorage.setItem("remember_me", JSON.stringify(this.state.remember_me));
-    //   this.props.history.push({
-    //     pathname: "/dashboard",
-    //     state: {
-    //       name: "prashant",
-    //     },
-    //   });
-    // }, 1500);
+
   };
 
   handleChange = (e) => {
     var { name, value, checked } = e.target;
     console.log("the name is", name);
     console.log("the value is ", value);
-    // if(type==='checkbox')
     if (name === "remember_me") {
       return this.setState({
         [name]: checked, //checked le booolean return garxa
@@ -160,22 +143,13 @@ export class Login extends Component {
   };
 
   componentDidMount() {
-    console.log("this will render at third");
     console.log("the props is >>", this.props);
     var isRememberme = JSON.parse(localStorage.getItem("remember_me"));
     console.log("the remember me value>>>", typeof isRememberme);
     if (isRememberme) {
       this.props.history.push("/dashboard");
     }
-    //   let i=0
-    //  this.abcd= setInterval(() => {
-    //     i++;
-    //     this.setState({
-    //       count:i
-    //     })
 
-    //   },1000);
-    //   console.log('this count is :',this.state.count)
   }
   componentDidUpdate(prevProps, prevState) {
     // console.log('prev state count ',prevState.count)
@@ -187,8 +161,6 @@ export class Login extends Component {
   }
 
   render() {
-    console.log("this will render at second");
-    // const button=this.state.isSubmitting? 'logging in': 'login'
     return (
       <div className="authbox">
         <h2>Login</h2>
@@ -233,7 +205,7 @@ export class Login extends Component {
           Register <Link to="/register">here</Link>
         </p>
         <p className="floatright">
-          <Link to="/forgetpassword">Forget password</Link>
+          <Link to="/forget_password">Forget password</Link>
         </p>
       </div>
     );
