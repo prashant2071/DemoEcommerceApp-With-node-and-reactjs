@@ -12,14 +12,6 @@ const sender=require('./../configs/email.config')
 const randomStr= require('randomstring')
 
 
-// const sender = nodemailer.createTransport({
-//     service:'Gmail' ,
-//     auth:{
-//         user:'pbt133393@gmail.com',
-//         pass:"AshokThapa"
-//     }
-// })
-
 function prepareEmail(data){
     return{
         from: '"Kirana web store 👻"', // sender addss
